@@ -18,12 +18,27 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.auger.Auger;
+import frc.robot.subsystems.auger.AugerIO;
+import frc.robot.subsystems.auger.AugerIOTalonFX;
+import frc.robot.subsystems.beltFloor.BeltFloor;
+import frc.robot.subsystems.beltFloor.BeltFloorIO;
+import frc.robot.subsystems.beltFloor.BeltFloorIOTalonFX;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.feeder.Feeder;
+import frc.robot.subsystems.feeder.FeederIO;
+import frc.robot.subsystems.feeder.FeederIOTalonFX;
+import frc.robot.subsystems.hood.Hood;
+import frc.robot.subsystems.hood.HoodIO;
+import frc.robot.subsystems.hood.HoodIOTalonFX;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIO;
+import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOSimNEW;
@@ -38,12 +53,19 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
   // Subsystems
-  private final Drive drive;
-  private final Shooter shooter;
+  private final Drive m_drive;
+  private final Shooter m_shooter;
+  private final Feeder m_feeder;
+  private final Intake m_intake;
+  private final Auger m_auger;
+  private final BeltFloor m_BeltFloor;
+  private final Hood m_hood;
   // private final Vision vision;
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController P1Controller = new CommandXboxController(0);
+  private final CommandXboxController P2Controller = new CommandXboxController(1);
+  
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -55,14 +77,19 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
         // a CANcoder
-        drive =
+        m_drive =
             new Drive(
                 new GyroIOPigeon2(),
                 new ModuleIOTalonFX(TunerConstants.FrontLeft),
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-        shooter = new Shooter(new ShooterIOTalonFX());
+        m_shooter = new Shooter(new ShooterIOTalonFX());
+        m_feeder = new Feeder(new FeederIOTalonFX());
+        m_intake = new Intake(new IntakeIOTalonFX());
+        m_auger = new Auger(new AugerIOTalonFX());
+        m_BeltFloor = new BeltFloor(new BeltFloorIOTalonFX());
+        m_hood = new Hood(new HoodIOTalonFX());
 
         // vision =
         //     new Vision(
@@ -91,14 +118,20 @@ public class RobotContainer {
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
-        drive =
+        m_drive =
             new Drive(
                 new GyroIO() {},
                 new ModuleIOSim(TunerConstants.FrontLeft),
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-        shooter = new Shooter(new ShooterIOSimNEW() {});
+        m_shooter = new Shooter(new ShooterIOSimNEW() {});
+        m_feeder = new Feeder(new FeederIO() {});
+        m_intake = new Intake(new IntakeIO() {});
+        m_auger = new Auger(new AugerIO() {});
+        m_BeltFloor = new BeltFloor(new BeltFloorIO() {});
+        m_hood = new Hood(new HoodIO() {});
+
         // vision =
         //     new Vision(
         //         drive::addVisionMeasurement,
@@ -111,14 +144,20 @@ public class RobotContainer {
 
       default:
         // Replayed robot, disable IO implementations
-        drive =
+        m_drive =
             new Drive(
                 new GyroIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        shooter = new Shooter(new ShooterIO() {});
+        m_shooter = new Shooter(new ShooterIO() {});
+        m_feeder = new Feeder(new FeederIO() {});
+        m_intake = new Intake(new IntakeIO() {});
+        m_auger = new Auger(new AugerIO() {});
+        m_BeltFloor = new BeltFloor(new BeltFloorIO() {});
+        m_hood = new Hood(new HoodIO() {});
+
         // vision = new Vision(drive::addVisionMeasurement, new VisionIO() {}, new VisionIO() {});
         break;
     }
@@ -128,19 +167,19 @@ public class RobotContainer {
 
     // Set up SysId routines
     autoChooser.addOption(
-        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(m_drive));
     autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
+        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(m_drive));
     autoChooser.addOption(
         "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
     autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        "Drive SysId (Dynamic Forward)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        "Drive SysId (Dynamic Reverse)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -153,44 +192,81 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Default command, normal field-relative drive
-    drive.setDefaultCommand(
+    // Default Commands -----------------------------------------------------------------------------------------------------------
+    m_drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            m_drive,
+            () -> -P1Controller.getLeftY(),
+            () -> -P1Controller.getLeftX(),
+            () -> -P1Controller.getRightX()));
+
+    m_shooter.setDefaultCommand(Commands.run(() -> m_shooter.stop(), m_shooter));
+    m_feeder.setDefaultCommand(Commands.run(() -> m_feeder.stopBackFeeder(), m_feeder));
+    m_feeder.setDefaultCommand(Commands.run(() -> m_feeder.stopFrontFeeder(), m_feeder));
+    //m_intake.setDefaultCommand(Commands.run(() -> m_intake.setIntakeHOME(), m_intake));
+    m_intake.setDefaultCommand(Commands.run(() -> m_intake.stopRoller(), m_intake));
+    m_auger.setDefaultCommand(Commands.run(() -> m_auger.stopAuger(), m_auger));
+    m_BeltFloor.setDefaultCommand(Commands.run(() -> m_BeltFloor.stopBeltFloor(), m_BeltFloor));
+    m_hood.setDefaultCommand(Commands.run(() -> m_hood.home(), m_hood));
+
+
+    // Driver Controls ------------------------------------------------------------------------------------------------------------
 
     // Lock to 0° when A button is held
-    controller
+    P1Controller
         .a()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
+                m_drive,
+                () -> -P1Controller.getLeftY(),
+                () -> -P1Controller.getLeftX(),
                 () -> Rotation2d.kZero));
 
     // Switch to X pattern when X button is pressed
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    P1Controller.x().onTrue(Commands.runOnce(m_drive::stopWithX, m_drive));
 
     // Reset gyro to 0° when B button is pressed
-    controller
+    P1Controller
         .b()
         .onTrue(
             Commands.runOnce(
                     () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
-                    drive)
+                        m_drive.setPose(
+                            new Pose2d(m_drive.getPose().getTranslation(), Rotation2d.kZero)),
+                    m_drive)
                 .ignoringDisable(true));
 
-    // shooter stufs
-    controller
-        .y()
-        .whileTrue(Commands.run(() -> shooter.shoot(5000)))
-        .whileFalse(Commands.run(() -> shooter.shoot(0)));
+
+    
+    // Operator Controls ----------------------------------------------------------------------------------------------------------
+
+    // Rev Up Flywheel
+    P2Controller.y().whileTrue(Commands.run(() -> m_shooter.shoot(5000)))
+                    .whileFalse(Commands.run(() -> m_shooter.shoot(0)));
+    
+    // Shoot
+    P2Controller.a().whileTrue(Commands.run(() -> m_feeder.frontFeed()));
+
+    // Intake
+    P2Controller.x().whileTrue(Commands.run(() -> m_intake.setIntakeDOWN()));
+    P2Controller.x().whileTrue(Commands.run(() -> m_intake.intakeRollers()));
+
+    // Auger
+    P2Controller.rightBumper().whileTrue(Commands.run(() -> m_auger.AugerRun()));
+    P2Controller.leftBumper().whileTrue(Commands.run(() -> m_auger.AugerReverse()));
+
+    // BeltFloor
+    P2Controller.rightTrigger().whileTrue(Commands.run(() -> m_BeltFloor.BeltFeed()));
+    P2Controller.leftTrigger().whileTrue(Commands.run(() -> m_BeltFloor.BeltFeedReverse()));
+
+    // Hood
+    P2Controller.b().whileTrue(Commands.run(() -> m_hood.up()));
+    
+
+
   }
+
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

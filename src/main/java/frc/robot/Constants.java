@@ -31,22 +31,22 @@ public final class Constants {
 
   public static class FeederConstants {
     public static final int FRONT_FEEDER_MOTOR_ID = 21;
-    public static final int BACK_FEEDER_MOTOR_ID = 22;
+    //public static final int BACK_FEEDER_MOTOR_ID = 22;
     public static final double feedingSpeedVolts = -12 * 0.6;
     public static final double feederRegurgSpeed = 0.7;
   }
 
   public static class HoodConstants {
-    public static final int HOOD_MOTOR_ID = 69;
-    public static final double HoodUpPos = 67;
-    public static final double HoodDownPos = -67;
+    public static final int HOOD_MOTOR_ID = 28;
+    public static final double HoodUpPos = 1;
+    public static final double HoodHomePos = 0;
   }
 
   public static class IntakeConstants {
     public static final int INTAKE_ROLLER_MOTOR_ID = 31;
     public static final int INTAKE_ARM_MOTOR_ID = 30;
     public static final double intakePositionHOME = 0;
-    public static final double intakePositionDOWN = -45;
+    public static final double intakePositionDOWN = -1;
     public static final double intakingSpeed = -8;
   }
 
@@ -59,13 +59,13 @@ public final class Constants {
   }
 
   public static class BeltFloorConstants {
-    public static final int BELT_FLOOR_MOTOR_ID = 67420;
+    public static final int BELT_FLOOR_MOTOR_ID = 62;
     public static final double beltFeedSpeed = 0.5;
     public static final double beltRegurgSpeed = -0.5;
   }
 
   public static class AugerConstants {
-    public static final int AUGER_MOTOR_ID = 67420;
+    public static final int AUGER_MOTOR_ID = 20;
     public static final double AugerSpeed = 0.5;
   }
 

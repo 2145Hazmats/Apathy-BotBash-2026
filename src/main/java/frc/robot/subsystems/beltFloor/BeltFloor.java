@@ -21,7 +21,7 @@ public class BeltFloor extends SubsystemBase {
     m_io.setBeltFloorOpenLoop(Constants.BeltFloorConstants.beltFeedSpeed);
   }
 
-  public void BeltRegurg() {
+  public void BeltFeedReverse() {
     m_io.setBeltFloorOpenLoop(Constants.BeltFloorConstants.beltRegurgSpeed);
   }
 

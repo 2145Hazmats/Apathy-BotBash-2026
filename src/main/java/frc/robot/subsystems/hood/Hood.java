@@ -21,8 +21,8 @@ public class Hood extends SubsystemBase {
     m_io.setHoodPosClosedLoop(Constants.HoodConstants.HoodUpPos);
   }
 
-  public void down() {
-    m_io.setHoodPosClosedLoop(Constants.HoodConstants.HoodDownPos);
+  public void home() {
+    m_io.setHoodPosClosedLoop(Constants.HoodConstants.HoodHomePos);
   }
 
   public void stop() {

@@ -20,6 +20,10 @@ public class Auger extends SubsystemBase {
     m_io.setAugerOpenLoop(Constants.AugerConstants.AugerSpeed);
   }
 
+  public void AugerReverse() {
+    m_io.setAugerOpenLoop(-Constants.AugerConstants.AugerSpeed);
+  }
+
   public void stopAuger() {
     m_io.setAugerOpenLoop(0);
   }
