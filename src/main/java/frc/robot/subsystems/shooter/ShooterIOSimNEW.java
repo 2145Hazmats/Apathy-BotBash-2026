@@ -36,7 +36,7 @@ public class ShooterIOSimNEW implements ShooterIO {
           ShooterSuperSystemConstants.kFlywheelGearing);
 
   public ShooterIOSimNEW() {
-    shooterMotor = new TalonFX(ShooterSuperSystemConstants.FLYWHEEL_MOTOR_ID);
+    shooterMotor = new TalonFX(ShooterSuperSystemConstants.FLYWHEEL_LEADER_MOTOR_ID);
     flywheelSim = new FlywheelSim(m_flywheelPlant, motorSim, 0.01);
 
     shooterMotorConfig =
@@ -72,10 +72,11 @@ public class ShooterIOSimNEW implements ShooterIO {
             .times(ShooterSuperSystemConstants.kFlywheelGearing)
             .in(RotationsPerSecond));
 
-    inputs.shooterConnected = shooterStatus.isOK();
-    inputs.shooterAppliedVoltage = shooterMotorSim.getMotorVoltage();
-    inputs.shooterCurrentAmps = shooterMotorSim.getSupplyCurrent();
-    inputs.shooterVelocityRotPerSec = SigmaMathUtils.RPMToRps(flywheelSim.getAngularVelocityRPM());
+    inputs.shooterLeaderConnected = shooterStatus.isOK();
+    inputs.shooterLeaderAppliedVoltage = shooterMotorSim.getMotorVoltage();
+    inputs.shooterLeaderCurrentAmps = shooterMotorSim.getSupplyCurrent();
+    inputs.shooterLeaderVelocityRotPerSec =
+        SigmaMathUtils.RPMToRps(flywheelSim.getAngularVelocityRPM());
   }
 
   @Override

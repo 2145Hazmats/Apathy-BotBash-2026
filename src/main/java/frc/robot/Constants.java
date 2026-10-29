@@ -31,8 +31,8 @@ public final class Constants {
 
   public static class FeederConstants {
     public static final int FRONT_FEEDER_MOTOR_ID = 21;
-    //public static final int BACK_FEEDER_MOTOR_ID = 22;
-    public static final double feedingSpeedVolts = -12 * 0.6;
+    // public static final int BACK_FEEDER_MOTOR_ID = 22;
+    public static final double feedingSpeedVolts = -12 * 0.3;
     public static final double feederRegurgSpeed = 0.7;
   }
 
@@ -45,13 +45,14 @@ public final class Constants {
   public static class IntakeConstants {
     public static final int INTAKE_ROLLER_MOTOR_ID = 31;
     public static final int INTAKE_ARM_MOTOR_ID = 30;
-    public static final double intakePositionHOME = 0;
-    public static final double intakePositionDOWN = -1;
+    public static final double intakePositionHOME = -15.625;
+    public static final double intakePositionDOWN = -57; // -53.875
     public static final double intakingSpeed = -8;
   }
 
   public static class ShooterSuperSystemConstants {
-    public static final int FLYWHEEL_MOTOR_ID = 29;
+    public static final int FLYWHEEL_LEADER_MOTOR_ID = 29;
+    public static final int FLYWHEEL_FOLLOWER_MOTOR_ID = 32;
     public static final double flyWheelShootingSpeed = 2000;
     public static final double kFlywheelMomentOfInertia = 0.0015;
     public static final double kFlywheelGearing = 1.0;
@@ -66,7 +67,7 @@ public final class Constants {
 
   public static class AugerConstants {
     public static final int AUGER_MOTOR_ID = 20;
-    public static final double AugerSpeed = 0.5;
+    public static final double AugerSpeed = 12;
   }
 
   public static class SigmaMathUtils {

@@ -65,7 +65,6 @@ public class RobotContainer {
   // Controller
   private final CommandXboxController P1Controller = new CommandXboxController(0);
   private final CommandXboxController P2Controller = new CommandXboxController(1);
-  
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -192,7 +191,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Default Commands -----------------------------------------------------------------------------------------------------------
+    // Default Commands
+    // -----------------------------------------------------------------------------------------------------------
     m_drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             m_drive,
@@ -203,18 +203,17 @@ public class RobotContainer {
     m_shooter.setDefaultCommand(Commands.run(() -> m_shooter.stop(), m_shooter));
     m_feeder.setDefaultCommand(Commands.run(() -> m_feeder.stopBackFeeder(), m_feeder));
     m_feeder.setDefaultCommand(Commands.run(() -> m_feeder.stopFrontFeeder(), m_feeder));
-    //m_intake.setDefaultCommand(Commands.run(() -> m_intake.setIntakeHOME(), m_intake));
+    m_intake.setDefaultCommand(Commands.run(() -> m_intake.setIntakeHOME(), m_intake));
     m_intake.setDefaultCommand(Commands.run(() -> m_intake.stopRoller(), m_intake));
     m_auger.setDefaultCommand(Commands.run(() -> m_auger.stopAuger(), m_auger));
     m_BeltFloor.setDefaultCommand(Commands.run(() -> m_BeltFloor.stopBeltFloor(), m_BeltFloor));
     m_hood.setDefaultCommand(Commands.run(() -> m_hood.home(), m_hood));
 
-
-    // Driver Controls ------------------------------------------------------------------------------------------------------------
+    // Driver Controls
+    // ------------------------------------------------------------------------------------------------------------
 
     // Lock to 0° when A button is held
-    P1Controller
-        .a()
+    P1Controller.a()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 m_drive,
@@ -226,8 +225,7 @@ public class RobotContainer {
     P1Controller.x().onTrue(Commands.runOnce(m_drive::stopWithX, m_drive));
 
     // Reset gyro to 0° when B button is pressed
-    P1Controller
-        .b()
+    P1Controller.b()
         .onTrue(
             Commands.runOnce(
                     () ->
@@ -236,19 +234,20 @@ public class RobotContainer {
                     m_drive)
                 .ignoringDisable(true));
 
-
-    
-    // Operator Controls ----------------------------------------------------------------------------------------------------------
+    // Operator Controls
+    // ----------------------------------------------------------------------------------------------------------
 
     // Rev Up Flywheel
-    P2Controller.y().whileTrue(Commands.run(() -> m_shooter.shoot(5000)))
-                    .whileFalse(Commands.run(() -> m_shooter.shoot(0)));
-    
+    P2Controller.y()
+        .whileTrue(Commands.run(() -> m_shooter.shoot(-4)))
+        .whileFalse(Commands.run(() -> m_shooter.shoot(0)));
+
     // Shoot
     P2Controller.a().whileTrue(Commands.run(() -> m_feeder.frontFeed()));
 
     // Intake
-    P2Controller.x().whileTrue(Commands.run(() -> m_intake.setIntakeDOWN()));
+    P2Controller.povDown().whileTrue(Commands.run(() -> m_intake.setIntakeDOWN()));
+    P2Controller.povUp().whileTrue(Commands.run(() -> m_intake.setIntakeHOME()));
     P2Controller.x().whileTrue(Commands.run(() -> m_intake.intakeRollers()));
 
     // Auger
@@ -261,12 +260,7 @@ public class RobotContainer {
 
     // Hood
     P2Controller.b().whileTrue(Commands.run(() -> m_hood.up()));
-    
-
-
   }
-
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

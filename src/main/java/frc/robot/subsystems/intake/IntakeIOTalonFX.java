@@ -10,7 +10,8 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import frc.robot.Constants;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import frc.robot.Constants.IntakeConstants;
 import org.littletonrobotics.junction.Logger;
 
 /** Add your docs here. */
@@ -28,26 +29,29 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final PositionVoltage positionVoltageRequest = new PositionVoltage(0.0);
 
   public IntakeIOTalonFX() {
-    intakeArmMotor = new TalonFX(Constants.IntakeConstants.INTAKE_ARM_MOTOR_ID);
+    intakeArmMotor = new TalonFX(IntakeConstants.INTAKE_ARM_MOTOR_ID);
     intakeArmMotorConfig =
         new TalonFXConfiguration()
             .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(40));
     intakeArmMotor.getConfigurator().apply(intakeArmMotorConfig);
-    intakeRollerMotor = new TalonFX(Constants.IntakeConstants.INTAKE_ROLLER_MOTOR_ID);
+
+    intakeRollerMotor = new TalonFX(IntakeConstants.INTAKE_ROLLER_MOTOR_ID);
     intakeRollerMotorConfig =
         new TalonFXConfiguration()
             .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(40));
     intakeRollerMotor.getConfigurator().apply(intakeRollerMotorConfig);
+
     var slot0Configs = new Slot0Configs();
     slot0Configs.kG = 0.4;
     slot0Configs.kP = 0.2;
+    slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
     intakeArmMotor.getConfigurator().apply(slot0Configs);
 
     resetIntakePosition();
   }
 
   public void resetIntakePosition() {
-    intakeArmMotor.setPosition(0);
+    intakeArmMotor.setPosition(IntakeConstants.intakePositionHOME);
   }
 
   @Override

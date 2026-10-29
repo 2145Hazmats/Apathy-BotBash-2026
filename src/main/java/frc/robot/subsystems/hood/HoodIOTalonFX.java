@@ -8,6 +8,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -26,6 +27,7 @@ public class HoodIOTalonFX implements HoodIO {
   private TalonFXConfiguration HoodMotorConfig;
 
   private final VoltageOut voltageRequest = new VoltageOut(0);
+  private final PositionVoltage positionVoltageRequest = new PositionVoltage(0);
 
   private final Debouncer hoodConnectedDebounce =
       new Debouncer(0.5, Debouncer.DebounceType.kFalling);
@@ -77,7 +79,7 @@ public class HoodIOTalonFX implements HoodIO {
   }
 
   @Override
-  public void setHoodPosClosedLoop(double output) {
-    HoodMotor.setControl(voltageRequest.withOutput(output));
+  public void setHoodPosClosedLoop(double position) {
+    HoodMotor.setControl(positionVoltageRequest.withPosition(position));
   }
 }

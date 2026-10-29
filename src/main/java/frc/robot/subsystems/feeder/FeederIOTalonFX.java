@@ -22,10 +22,10 @@ import frc.robot.Constants;
 public class FeederIOTalonFX implements FeederIO {
   // Motors
   private TalonFX frontFeederMotor;
-  //private TalonFX backFeederMotor;
+  // private TalonFX backFeederMotor;
   // Configs
   private TalonFXConfiguration frontFeederMotorConfig;
-  //private TalonFXConfiguration backFeederMotorConfig;
+  // private TalonFXConfiguration backFeederMotorConfig;
 
   private final VoltageOut voltageRequest = new VoltageOut(0);
 
@@ -39,10 +39,10 @@ public class FeederIOTalonFX implements FeederIO {
   private final StatusSignal<Current> frontFeederCurrent;
 
   // Inputs from back feeder motor
-  //private final StatusSignal<Angle> backFeederPosition;
-  //private final StatusSignal<AngularVelocity> backFeederVelocity;
-  //private final StatusSignal<Voltage> backFeederAppliedVolts;
-  //private final StatusSignal<Current> backFeederCurrent;
+  // private final StatusSignal<Angle> backFeederPosition;
+  // private final StatusSignal<AngularVelocity> backFeederVelocity;
+  // private final StatusSignal<Voltage> backFeederAppliedVolts;
+  // private final StatusSignal<Current> backFeederCurrent;
 
   public FeederIOTalonFX() {
     frontFeederMotor = new TalonFX(Constants.FeederConstants.FRONT_FEEDER_MOTOR_ID);
@@ -51,11 +51,11 @@ public class FeederIOTalonFX implements FeederIO {
             .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(40));
     frontFeederMotor.getConfigurator().apply(frontFeederMotorConfig);
 
-    //backFeederMotor = new TalonFX(Constants.FeederConstants.BACK_FEEDER_MOTOR_ID);
-    //backFeederMotorConfig =
+    // backFeederMotor = new TalonFX(Constants.FeederConstants.BACK_FEEDER_MOTOR_ID);
+    // backFeederMotorConfig =
     //    new TalonFXConfiguration()
     //        .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(40));
-    //backFeederMotor.getConfigurator().apply(backFeederMotorConfig);
+    // backFeederMotor.getConfigurator().apply(backFeederMotorConfig);
 
     // Create front feeder status signals
     frontFeederPosition = frontFeederMotor.getPosition();
@@ -64,10 +64,10 @@ public class FeederIOTalonFX implements FeederIO {
     frontFeederCurrent = frontFeederMotor.getStatorCurrent();
 
     // Create back feeder status signals
-    //backFeederPosition = backFeederMotor.getPosition();
-    //backFeederVelocity = backFeederMotor.getVelocity();
-    //backFeederAppliedVolts = backFeederMotor.getMotorVoltage();
-    //backFeederCurrent = backFeederMotor.getStatorCurrent();
+    // backFeederPosition = backFeederMotor.getPosition();
+    // backFeederVelocity = backFeederMotor.getVelocity();
+    // backFeederAppliedVolts = backFeederMotor.getMotorVoltage();
+    // backFeederCurrent = backFeederMotor.getStatorCurrent();
 
     // Configure periodic frames
     BaseStatusSignal.setUpdateFrequencyForAll(
@@ -76,13 +76,13 @@ public class FeederIOTalonFX implements FeederIO {
         frontFeederAppliedVolts,
         frontFeederCurrent,
         frontFeederPosition);
-        //backFeederVelocity,
-        //backFeederAppliedVolts,
-        //backFeederCurrent,
-        //backFeederPosition);
+    // backFeederVelocity,
+    // backFeederAppliedVolts,
+    // backFeederCurrent,
+    // backFeederPosition);
 
     ParentDevice.optimizeBusUtilizationForAll(frontFeederMotor);
-    //ParentDevice.optimizeBusUtilizationForAll(frontFeederMotor, backFeederMotor);
+    // ParentDevice.optimizeBusUtilizationForAll(frontFeederMotor, backFeederMotor);
   }
 
   @Override
@@ -90,14 +90,11 @@ public class FeederIOTalonFX implements FeederIO {
     // Refresh all signals
     var feederStatus =
         BaseStatusSignal.refreshAll(
-            frontFeederPosition,
-            frontFeederVelocity,
-            frontFeederAppliedVolts,
-            frontFeederCurrent);
-            //backFeederPosition,
-            //backFeederVelocity,
-            //backFeederAppliedVolts,
-            //backFeederCurrent);
+            frontFeederPosition, frontFeederVelocity, frontFeederAppliedVolts, frontFeederCurrent);
+    // backFeederPosition,
+    // backFeederVelocity,
+    // backFeederAppliedVolts,
+    // backFeederCurrent);
 
     inputs.feederConnected = feederConnectedDebounce.calculate(feederStatus.isOK());
 
@@ -106,10 +103,10 @@ public class FeederIOTalonFX implements FeederIO {
     inputs.frontFeederCurrentAmps = frontFeederCurrent.getValueAsDouble();
     inputs.frontFeederVelocityRotPerSec = frontFeederVelocity.getValueAsDouble();
 
-    //inputs.backFeederAppliedVoltage = frontFeederAppliedVolts.getValueAsDouble();
-    //inputs.backFeederPositionRad = frontFeederPosition.getValueAsDouble();
-    //inputs.backFeederCurrentAmps = frontFeederCurrent.getValueAsDouble();
-    //inputs.backFeederVelocityRotPerSec = frontFeederVelocity.getValueAsDouble();
+    // inputs.backFeederAppliedVoltage = frontFeederAppliedVolts.getValueAsDouble();
+    // inputs.backFeederPositionRad = frontFeederPosition.getValueAsDouble();
+    // inputs.backFeederCurrentAmps = frontFeederCurrent.getValueAsDouble();
+    // inputs.backFeederVelocityRotPerSec = frontFeederVelocity.getValueAsDouble();
   }
 
   @Override
@@ -117,8 +114,8 @@ public class FeederIOTalonFX implements FeederIO {
     frontFeederMotor.setControl(voltageRequest.withOutput(output));
   }
 
-  //@Override
-  //public void setBackFeederOpenLoop(double output) {
+  // @Override
+  // public void setBackFeederOpenLoop(double output) {
   //  backFeederMotor.setControl(voltageRequest.withOutput(output));
-  //}
+  // }
 }

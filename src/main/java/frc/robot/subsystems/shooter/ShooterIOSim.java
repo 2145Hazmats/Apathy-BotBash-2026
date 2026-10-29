@@ -73,7 +73,7 @@ public class ShooterIOSim implements ShooterIO {
       new Debouncer(0.5, Debouncer.DebounceType.kFalling);
 
   public ShooterIOSim() {
-    shooterMotor = new TalonFX(Constants.ShooterSuperSystemConstants.FLYWHEEL_MOTOR_ID);
+    shooterMotor = new TalonFX(Constants.ShooterSuperSystemConstants.FLYWHEEL_LEADER_MOTOR_ID);
     shooterMotorConfig =
         new TalonFXConfiguration()
             .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(40));
@@ -90,10 +90,11 @@ public class ShooterIOSim implements ShooterIO {
     // Refresh all signals
     var shooterStatus = simState.getLastStatusCode();
 
-    inputs.shooterConnected = shooterConnectedDebounce.calculate(shooterStatus.isOK());
-    inputs.shooterAppliedVoltage = simState.getMotorVoltage();
-    inputs.shooterCurrentAmps = simState.getSupplyCurrent();
-    inputs.shooterVelocityRotPerSec = SigmaMathUtils.RPMToRps(flywheel.getAngularVelocityRPM());
+    inputs.shooterLeaderConnected = shooterConnectedDebounce.calculate(shooterStatus.isOK());
+    inputs.shooterLeaderAppliedVoltage = simState.getMotorVoltage();
+    inputs.shooterLeaderCurrentAmps = simState.getSupplyCurrent();
+    inputs.shooterLeaderVelocityRotPerSec =
+        SigmaMathUtils.RPMToRps(flywheel.getAngularVelocityRPM());
   }
 
   @Override
