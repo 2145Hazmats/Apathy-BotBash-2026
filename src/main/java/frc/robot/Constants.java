@@ -46,6 +46,7 @@ public final class Constants {
     public static final int INTAKE_ROLLER_MOTOR_ID = 31;
     public static final int INTAKE_ARM_MOTOR_ID = 30;
     public static final double intakePositionHOME = -15.625;
+    //public static final double IntakePositionHALFWAYForVeritysToBeSafeAndSoTheyDontCrashTheRobot = -
     public static final double intakePositionDOWN = -57; // -53.875
     public static final double intakingSpeed = -8;
   }
@@ -61,8 +62,8 @@ public final class Constants {
 
   public static class BeltFloorConstants {
     public static final int BELT_FLOOR_MOTOR_ID = 62;
-    public static final double beltFeedSpeed = 0.5;
-    public static final double beltRegurgSpeed = -0.5;
+    public static final double beltFeedSpeed = 7;
+    public static final double beltRegurgSpeed = -7;
   }
 
   public static class AugerConstants {

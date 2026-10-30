@@ -25,8 +25,16 @@ public class Intake extends SubsystemBase {
     m_io.setIntakeArmPosition(Constants.IntakeConstants.intakePositionDOWN);
   }
 
+  //public void setIntakeHalfwayForVeritysToBeSafeAndSoTheyDontCrashTheRobot() {
+  //  m_io.setIntakeArmPosition(Constants.IntakeConstants.);
+  //}
+
   public void intakeRollers() {
     m_io.setIntakeRollerOpenLoop(Constants.IntakeConstants.intakingSpeed);
+  }
+
+  public void reverseRollers() {
+    m_io.setIntakeRollerOpenLoop(-Constants.IntakeConstants.intakingSpeed);
   }
 
   public void stopRoller() {

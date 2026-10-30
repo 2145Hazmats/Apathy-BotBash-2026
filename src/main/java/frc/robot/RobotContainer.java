@@ -8,16 +8,21 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.ShooterSuperSystemConstants;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.HubSubsystem;
 import frc.robot.subsystems.auger.Auger;
 import frc.robot.subsystems.auger.AugerIO;
 import frc.robot.subsystems.auger.AugerIOTalonFX;
@@ -60,6 +65,7 @@ public class RobotContainer {
   private final Auger m_auger;
   private final BeltFloor m_BeltFloor;
   private final Hood m_hood;
+  private final HubSubsystem hub = new HubSubsystem(this);
   // private final Vision vision;
 
   // Controller
@@ -163,6 +169,10 @@ public class RobotContainer {
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    NamedCommands.registerCommand("Intake DOWN", Commands.run(() -> m_intake.setIntakeDOWN()));
+    NamedCommands.registerCommand("Intake HOME", Commands.run(() -> m_intake.setIntakeHOME()));
+    //NamedCommands.registerCommand("Shoot", Commands.run(() -> m_shooter.shoot(ShooterSuperSystemConstants.)));
+    
 
     // Set up SysId routines
     autoChooser.addOption(
@@ -203,7 +213,7 @@ public class RobotContainer {
     m_shooter.setDefaultCommand(Commands.run(() -> m_shooter.stop(), m_shooter));
     m_feeder.setDefaultCommand(Commands.run(() -> m_feeder.stopBackFeeder(), m_feeder));
     m_feeder.setDefaultCommand(Commands.run(() -> m_feeder.stopFrontFeeder(), m_feeder));
-    m_intake.setDefaultCommand(Commands.run(() -> m_intake.setIntakeHOME(), m_intake));
+    // m_intake.setDefaultCommand(Commands.run(() -> m_intake.setIntakeHOME(), m_intake));
     m_intake.setDefaultCommand(Commands.run(() -> m_intake.stopRoller(), m_intake));
     m_auger.setDefaultCommand(Commands.run(() -> m_auger.stopAuger(), m_auger));
     m_BeltFloor.setDefaultCommand(Commands.run(() -> m_BeltFloor.stopBeltFloor(), m_BeltFloor));
@@ -238,28 +248,44 @@ public class RobotContainer {
     // ----------------------------------------------------------------------------------------------------------
 
     // Rev Up Flywheel
-    P2Controller.y()
+    P2Controller.a()
         .whileTrue(Commands.run(() -> m_shooter.shoot(-4)))
         .whileFalse(Commands.run(() -> m_shooter.shoot(0)));
 
     // Shoot
-    P2Controller.a().whileTrue(Commands.run(() -> m_feeder.frontFeed()));
+    P2Controller.b().whileTrue(Commands.run(() -> m_feeder.frontFeed()));
 
     // Intake
     P2Controller.povDown().whileTrue(Commands.run(() -> m_intake.setIntakeDOWN()));
     P2Controller.povUp().whileTrue(Commands.run(() -> m_intake.setIntakeHOME()));
-    P2Controller.x().whileTrue(Commands.run(() -> m_intake.intakeRollers()));
+    
+    // Intake Rollers and Auger and Belt Floor
+    P2Controller.rightBumper().whileTrue(Commands.run(
+        () -> {
+        m_intake.intakeRollers();
+        m_auger.AugerRun();
+        m_BeltFloor.BeltFeed();
+        }));
+    
+    P2Controller.leftBumper().whileTrue(Commands.run(
+        () -> {
+        m_intake.reverseRollers();
+        m_auger.AugerReverse();
+        m_BeltFloor.BeltFeedReverse();
+        }));
+
+
 
     // Auger
-    P2Controller.rightBumper().whileTrue(Commands.run(() -> m_auger.AugerRun()));
-    P2Controller.leftBumper().whileTrue(Commands.run(() -> m_auger.AugerReverse()));
+    //P2Controller.rightBumper().whileTrue(Commands.run(() -> m_auger.AugerRun()));
+    //P2Controller.leftBumper().whileTrue(Commands.run(() -> m_auger.AugerReverse()));
 
     // BeltFloor
-    P2Controller.rightTrigger().whileTrue(Commands.run(() -> m_BeltFloor.BeltFeed()));
-    P2Controller.leftTrigger().whileTrue(Commands.run(() -> m_BeltFloor.BeltFeedReverse()));
+    //P2Controller.rightBumper().whileTrue(Commands.run(() -> m_BeltFloor.BeltFeed()));
+    //P2Controller.leftBumper().whileTrue(Commands.run(() -> m_BeltFloor.BeltFeedReverse()));
 
     // Hood
-    P2Controller.b().whileTrue(Commands.run(() -> m_hood.up()));
+    P2Controller.y().whileTrue(Commands.run(() -> m_hood.up()));
   }
 
   /**
@@ -269,5 +295,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  public void setControllerRumbles(double value) {
+    P1Controller.setRumble(RumbleType.kBothRumble, value);
+    P2Controller.setRumble(RumbleType.kBothRumble, value);
   }
 }
