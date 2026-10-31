@@ -24,6 +24,4 @@ public interface FeederIO {
   public default void updateInputs(FeederIOInputs inputs) {}
 
   public default void setFrontFeederOpenLoop(double output) {}
-
-  public default void setBackFeederOpenLoop(double output) {}
 }

@@ -16,7 +16,7 @@ public class Auger extends SubsystemBase {
     m_io = io;
   }
 
-  public void AugerRun() {
+  public void run() {
     m_io.setAugerOpenLoop(Constants.AugerConstants.AugerSpeed);
   }
 
@@ -24,7 +24,7 @@ public class Auger extends SubsystemBase {
     m_io.setAugerOpenLoop(-Constants.AugerConstants.AugerSpeed);
   }
 
-  public void stopAuger() {
+  public void stop() {
     m_io.setAugerOpenLoop(0);
   }
 

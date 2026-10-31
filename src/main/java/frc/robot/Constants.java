@@ -37,8 +37,8 @@ public final class Constants {
   }
 
   public static class HoodConstants {
-    public static final int HOOD_MOTOR_ID = 28;
-    public static final double HoodUpPos = 1;
+    public static final int HOOD_MOTOR_ID = 22;
+    public static final double HoodUpPos = 3.2;
     public static final double HoodHomePos = 0;
   }
 
@@ -46,24 +46,27 @@ public final class Constants {
     public static final int INTAKE_ROLLER_MOTOR_ID = 31;
     public static final int INTAKE_ARM_MOTOR_ID = 30;
     public static final double intakePositionHOME = -15.625;
-    //public static final double IntakePositionHALFWAYForVeritysToBeSafeAndSoTheyDontCrashTheRobot = -
-    public static final double intakePositionDOWN = -57; // -53.875
+    // public static final double IntakePositionHALFWAYForVeritysToBeSafeAndSoTheyDontCrashTheRobot
+    // = -
+    public static final double intakePositionDOWN = -65; // -57  -53.875
+    public static final double intakePositionMIDDLE = -34.4;
     public static final double intakingSpeed = -8;
   }
 
   public static class ShooterSuperSystemConstants {
-    public static final int FLYWHEEL_LEADER_MOTOR_ID = 29;
-    public static final int FLYWHEEL_FOLLOWER_MOTOR_ID = 32;
+    public static final int FLYWHEEL_LEADER_MOTOR_ID = 28;
+    // public static final int FLYWHEEL_FOLLOWER_MOTOR_ID = 32;
     public static final double flyWheelShootingSpeed = 2000;
     public static final double kFlywheelMomentOfInertia = 0.0015;
     public static final double kFlywheelGearing = 1.0;
     public static final double flyWheelShootingSpeedMultiplier = 0.6;
+    public static final double spinUpSeconds = 3;
   }
 
   public static class BeltFloorConstants {
     public static final int BELT_FLOOR_MOTOR_ID = 62;
-    public static final double beltFeedSpeed = 7;
-    public static final double beltRegurgSpeed = -7;
+    public static final double beltFeedSpeed = -5;
+    public static final double beltRegurgSpeed = 5;
   }
 
   public static class AugerConstants {

@@ -7,6 +7,7 @@ package frc.robot.subsystems.hood;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -25,6 +26,7 @@ public class HoodIOTalonFX implements HoodIO {
   private TalonFX HoodMotor;
   // Configs
   private TalonFXConfiguration HoodMotorConfig;
+  private Slot0Configs slot0Configs = new Slot0Configs();
 
   private final VoltageOut voltageRequest = new VoltageOut(0);
   private final PositionVoltage positionVoltageRequest = new PositionVoltage(0);
@@ -44,6 +46,9 @@ public class HoodIOTalonFX implements HoodIO {
         new TalonFXConfiguration()
             .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(40));
     HoodMotor.getConfigurator().apply(HoodMotorConfig);
+
+    slot0Configs.kP = 0.7;
+    HoodMotor.getConfigurator().apply(slot0Configs);
 
     // Create front hood status signals
     HoodPositionRad = HoodMotor.getPosition();

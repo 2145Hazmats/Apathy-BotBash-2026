@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
     m_io = io;
   }
 
-  public void shoot(float volts) {
+  public void shoot(double volts) {
     m_io.setShooterOpenLoop(volts);
   }
 

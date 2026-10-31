@@ -17,28 +17,16 @@ public class Feeder extends SubsystemBase {
     m_io = io;
   }
 
-  public void frontFeed() {
+  public void feed() {
     m_io.setFrontFeederOpenLoop(Constants.FeederConstants.feedingSpeedVolts);
   }
 
-  public void backFeed() {
-    m_io.setBackFeederOpenLoop(-Constants.FeederConstants.feedingSpeedVolts);
-  }
-
-  public void frontRegurg() {
+  public void regurg() {
     m_io.setFrontFeederOpenLoop(Constants.FeederConstants.feederRegurgSpeed);
   }
 
-  public void backRegurg() {
-    m_io.setBackFeederOpenLoop(-Constants.FeederConstants.feederRegurgSpeed);
-  }
-
-  public void stopFrontFeeder() {
+  public void stop() {
     m_io.setFrontFeederOpenLoop(0);
-  }
-
-  public void stopBackFeeder() {
-    m_io.setBackFeederOpenLoop(0);
   }
 
   @Override

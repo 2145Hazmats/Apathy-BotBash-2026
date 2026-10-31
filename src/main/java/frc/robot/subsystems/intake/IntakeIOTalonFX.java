@@ -58,6 +58,7 @@ public class IntakeIOTalonFX implements IntakeIO {
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.intakeArmAppliedVoltage = intakeArmMotor.getMotorVoltage().getValueAsDouble();
     inputs.intakeRollerAppliedVoltage = intakeRollerMotor.getMotorVoltage().getValueAsDouble();
+    inputs.intakeArmPositionRad = intakeArmMotor.getPosition().getValueAsDouble();
     Logger.recordOutput("ArmPostition", intakeArmMotor.getPosition().getValueAsDouble());
   }
 
