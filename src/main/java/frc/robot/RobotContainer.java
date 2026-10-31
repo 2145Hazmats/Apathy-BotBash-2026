@@ -220,6 +220,15 @@ public class RobotContainer {
     // Driver Controls
     // ------------------------------------------------------------------------------------------------------------
 
+    // Slow Mode
+    P1Controller.rightBumper().whileTrue(
+        DriveCommands.joystickDrive(
+            m_drive,
+            () -> (-P1Controller.getLeftY() * 0.5),
+            () -> (-P1Controller.getLeftX() * 0.5),
+            () -> (-P1Controller.getRightX() * 0.75)));
+
+    
     // Lock to 0° when A button is held
     P1Controller.a()
         .whileTrue(
@@ -242,11 +251,12 @@ public class RobotContainer {
                     m_drive)
                 .ignoringDisable(true));
 
+
     // Operator Controls
     // ----------------------------------------------------------------------------------------------------------
 
     // Intake
-    P2Controller.a()
+    P2Controller.povDown()
         .whileTrue(Commands.run(() -> m_intake.intakeRollers()))
         .whileFalse(Commands.run(() -> m_intake.stopRoller()));
 
@@ -268,7 +278,7 @@ public class RobotContainer {
     // Intake
     P2Controller.povDown().whileTrue(Commands.run(() -> m_intake.setIntakeDOWN()));
     P2Controller.povUp().whileTrue(Commands.run(() -> m_intake.setIntakeHOME()));
-
+ 
     P2Controller.leftBumper()
         .whileTrue(
             Commands.run(
