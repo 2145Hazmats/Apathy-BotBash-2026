@@ -7,19 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Intake MIDDLE"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Left Preload Path"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake DOWN"
           }
         }
       ]

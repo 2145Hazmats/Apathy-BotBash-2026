@@ -169,9 +169,9 @@ public class RobotContainer {
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     NamedCommands.registerCommand("Intake DOWN", Commands.run(() -> m_intake.setIntakeDOWN()));
+    NamedCommands.registerCommand("Intake MIDDLE", Commands.run(() -> m_intake.setIntakeMIDDLE()));
     NamedCommands.registerCommand("Intake HOME", Commands.run(() -> m_intake.setIntakeHOME()));
-    // NamedCommands.registerCommand("Shoot", Commands.run(() ->
-    // m_shooter.shoot(ShooterSuperSystemConstants.)));
+    NamedCommands.registerCommand("Shoot", Commands.run(() -> ShootRoutine()));
 
     // Set up SysId routines
     autoChooser.addOption(
@@ -211,7 +211,6 @@ public class RobotContainer {
 
     m_shooter.setDefaultCommand(Commands.run(() -> m_shooter.stop(), m_shooter));
     m_feeder.setDefaultCommand(Commands.run(() -> m_feeder.stop(), m_feeder));
-    m_intake.setDefaultCommand(Commands.run(() -> m_intake.setIntakeHOME(), m_intake));
     m_intake.setDefaultCommand(Commands.run(() -> m_intake.stopRoller(), m_intake));
     m_auger.setDefaultCommand(Commands.run(() -> m_auger.stop(), m_auger));
     m_BeltFloor.setDefaultCommand(Commands.run(() -> m_BeltFloor.stop(), m_BeltFloor));

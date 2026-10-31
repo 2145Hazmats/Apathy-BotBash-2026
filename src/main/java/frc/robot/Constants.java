@@ -46,8 +46,6 @@ public final class Constants {
     public static final int INTAKE_ROLLER_MOTOR_ID = 31;
     public static final int INTAKE_ARM_MOTOR_ID = 30;
     public static final double intakePositionHOME = -15.625;
-    // public static final double IntakePositionHALFWAYForVeritysToBeSafeAndSoTheyDontCrashTheRobot
-    // = -
     public static final double intakePositionDOWN = -65; // -57  -53.875
     public static final double intakePositionMIDDLE = -34.4;
     public static final double intakingSpeed = -8;

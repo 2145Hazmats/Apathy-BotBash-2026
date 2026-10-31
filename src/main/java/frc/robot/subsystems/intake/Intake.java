@@ -21,6 +21,10 @@ public class Intake extends SubsystemBase {
     m_io.setIntakeArmPosition(Constants.IntakeConstants.intakePositionHOME);
   }
 
+  public void setIntakeMIDDLE() {
+    m_io.setIntakeArmPosition(Constants.IntakeConstants.intakePositionMIDDLE);
+  }
+
   public void setIntakeDOWN() {
     m_io.setIntakeArmPosition(Constants.IntakeConstants.intakePositionDOWN);
   }
